@@ -5,6 +5,7 @@ def fun_ecdf(x):
     
     Dependencies:
         numpy
+        matplotlib.pyplot
     
     """
     import numpy as np

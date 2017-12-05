@@ -12,8 +12,10 @@ import matplotlib.pyplot as plt
 np.random.seed(seed = 187)
 x = np.random.normal(0, 1, 1000)
 x.mean()
+
+plt.plot(x)
 #
 
-from fun_ecdf import fun_ecdf
-
 fun_ecdf(x)
+
+jnum = 50

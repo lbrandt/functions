@@ -1,30 +1,50 @@
-def fun_ecdf(x):
+def fun_hist(x, jnum):
     """
-    fun_ecdf.py
-    Computes and plots the empirical distribution of a given data vector.
+    fun_hist.py
+    Computes and plots the histogram estimator of a given data vector.
+    
+    Inputs:
+        x       Data
+        #h       Bin width
+        jnum    Number of bins
+        
     
     Dependencies:
         numpy
+        matplotlib.pyplot
     
     """
     import numpy as np
     import matplotlib.pyplot as plt
     
-    # Read data size
-    N = np.shape(x)[0]
+    # Read data dimensions
+    N   = np.shape(x)[0]
+    max = x.max()
+    min = x.min()
     
-    # Sort values
-    x_sort = sorted(x)
+    # Calculate bin width
+    h = (max - min) /jnum
     
-    # Make steps
-    x_ecdf    = np.zeros(N)
-    x_ecdf[0] = 1/N
+    # Construct histogram estimator
+    count     = np.zeros(jnum)
+    x_hist    = np.zeros(N)
     
-    for i in range(1, N):
-        x_ecdf[i] = x_ecdf[i-1] + 1/N
+    for j in range(jnum):
+        
+        # Interval borders
+        lowerBound = min + h*j
+        upperBound = min + h*(j+1)
+        
+        # Count observations in current bin
+        count[j]   = sum((x >= lowerBound) & (x < upperBound))
+        
+        # Assign values to bins
+        for i in range(N):
+            if ((x[i] >= lowerBound) & (x[i] < upperBound)): x_hist[i] = count[j]/(N*h)
+        
     
-    
-    plt.plot(x_sort, x_ecdf)
+    # Plot
+    plt.plot(x, x_hist, 'bo')
     plt.xlabel('Data')
-    plt.ylabel('ECDF')
-    return x_ecdf
+    plt.ylabel('Histogram')
+    return x_hist, count
